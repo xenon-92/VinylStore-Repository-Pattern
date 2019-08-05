@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="VINYLPRINTSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ARTIST">
+          <Key>
+            <PropertyRef Name="ARTIST_ID" />
+          </Key>
+          <Property Name="ARTIST_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ARTIST_NAME" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TRACK">
+          <Key>
+            <PropertyRef Name="TRACK_ID" />
+          </Key>
+          <Property Name="TRACK_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TRACK_NAME" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TRACK_ARTIST" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK__TRACK__TRACK_ART__4BAC3F29">
+          <End Role="ARTIST" Type="Self.ARTIST" Multiplicity="1" />
+          <End Role="TRACK" Type="Self.TRACK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ARTIST">
+              <PropertyRef Name="ARTIST_ID" />
+            </Principal>
+            <Dependent Role="TRACK">
+              <PropertyRef Name="TRACK_ARTIST" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VINYLPRINTSModelStoreContainer">
+          <EntitySet Name="ARTIST" EntityType="Self.ARTIST" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRACK" EntityType="Self.TRACK" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__TRACK__TRACK_ART__4BAC3F29" Association="Self.FK__TRACK__TRACK_ART__4BAC3F29">
+            <End Role="ARTIST" EntitySet="ARTIST" />
+            <End Role="TRACK" EntitySet="TRACK" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VINYLPRINTSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ARTIST">
+          <Key>
+            <PropertyRef Name="ARTIST_ID" />
+          </Key>
+          <Property Name="ARTIST_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ARTIST_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="TRACKs" Relationship="Self.FK__TRACK__TRACK_ART__4BAC3F29" FromRole="ARTIST" ToRole="TRACK" />
+        </EntityType>
+        <EntityType Name="TRACK">
+          <Key>
+            <PropertyRef Name="TRACK_ID" />
+          </Key>
+          <Property Name="TRACK_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TRACK_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TRACK_ARTIST" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ARTIST" Relationship="Self.FK__TRACK__TRACK_ART__4BAC3F29" FromRole="TRACK" ToRole="ARTIST" />
+        </EntityType>
+        <Association Name="FK__TRACK__TRACK_ART__4BAC3F29">
+          <End Role="ARTIST" Type="Self.ARTIST" Multiplicity="1" />
+          <End Role="TRACK" Type="Self.TRACK" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ARTIST">
+              <PropertyRef Name="ARTIST_ID" />
+            </Principal>
+            <Dependent Role="TRACK">
+              <PropertyRef Name="TRACK_ARTIST" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CustomMusicContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ARTISTs" EntityType="Self.ARTIST" />
+          <EntitySet Name="TRACKs" EntityType="Self.TRACK" />
+          <AssociationSet Name="FK__TRACK__TRACK_ART__4BAC3F29" Association="Self.FK__TRACK__TRACK_ART__4BAC3F29">
+            <End Role="ARTIST" EntitySet="ARTISTs" />
+            <End Role="TRACK" EntitySet="TRACKs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VINYLPRINTSModelStoreContainer" CdmEntityContainer="CustomMusicContext">
+          <EntitySetMapping Name="ARTISTs">
+            <EntityTypeMapping TypeName="VINYLPRINTSModel.ARTIST">
+              <MappingFragment StoreEntitySet="ARTIST">
+                <ScalarProperty Name="ARTIST_ID" ColumnName="ARTIST_ID" />
+                <ScalarProperty Name="ARTIST_NAME" ColumnName="ARTIST_NAME" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRACKs">
+            <EntityTypeMapping TypeName="VINYLPRINTSModel.TRACK">
+              <MappingFragment StoreEntitySet="TRACK">
+                <ScalarProperty Name="TRACK_ID" ColumnName="TRACK_ID" />
+                <ScalarProperty Name="TRACK_NAME" ColumnName="TRACK_NAME" />
+                <ScalarProperty Name="TRACK_ARTIST" ColumnName="TRACK_ARTIST" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
